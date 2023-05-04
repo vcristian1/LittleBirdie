@@ -1,3 +1,4 @@
+import { User } from "@clerk/nextjs/dist/api";
 import { clerkClient } from "@clerk/nextjs/server";
 import { z } from "zod";
 
@@ -32,8 +33,6 @@ export const postsRouter = createTRPCRouter({
         code: "INTERNAL_SERVER_ERROR",
         message: "Author for post not found",
       });
-
-      console.log(author.name);
 
       return {
         post, 

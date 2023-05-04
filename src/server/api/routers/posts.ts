@@ -1,6 +1,4 @@
-import { User } from "@clerk/nextjs/dist/api";
 import { clerkClient } from "@clerk/nextjs/server";
-import { TRPCError } from "@trpc/server/dist/error/TRPCError";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -22,7 +20,7 @@ export const postsRouter = createTRPCRouter({
 
     const users = ( 
       await clerkClient.users.getUserList({
-      userId: posts.map((post) => post.authorId),
+      userIds: posts.map((post) => post.authorId),
       limit: 100,
       })
     ).map(filterUserForClient);
@@ -35,12 +33,11 @@ export const postsRouter = createTRPCRouter({
         message: "Author for post not found",
       });
 
+      console.log(author.name);
+
       return {
         post, 
-        author: {
-          ...author,
-          username: author.name,
-        }
+        author,
       };
     });
   }),

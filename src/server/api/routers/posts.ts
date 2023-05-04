@@ -7,7 +7,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
-const filterUserForClient = (user: User) => {
+const filterUserForClient = () => {
   return {
     id: user.id, 
     name: user.username, 

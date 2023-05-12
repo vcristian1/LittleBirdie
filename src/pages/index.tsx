@@ -1,8 +1,10 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import Image from "next/image";
+import { SignInButton, useUser } from "@clerk/nextjs";
 
-import { api, RouterOutputs } from "~/utils/api";
+import { api } from "~/utils/api";
+import type {RouterOutputs} from "~/utils/api"
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -11,33 +13,27 @@ dayjs.extend(relativeTime);
 
 const CreatePostWizard = () => {
   const { user } = useUser();
+
   if (!user) return null;
 
   return (
     <div className="flex gap-3 w-full">
-      <img className="h-14 w-14 rounded-full" src={user.profileImageUrl} alt="Profile_Image" />
+      <Image width={56} height={56} className="h-14 w-14 rounded-full" src={user.profileImageUrl} alt="Profile_Image" />
       <input className="grow outline-none bg-transparent"type="text" placeholder="Type some emojis!" />
     </div>
-
   )
 }
-type PostWithUser = RouterOutputs["posts"]["getAll"][number];
 
+type PostWithUser = RouterOutputs["posts"]["getAll"][number];
 const PostView = (props: PostWithUser) => {
   const { post, author } = props;
   return (
-    <div className="flex gap-3 border-b border-slate-400 p-4" key={post.id}>
-      <img className="h-14 w-14 rounded-full" src={author.profileImageUrl} alt="Profile_Image" />
-      <div className="flex flex-col">
-        <div className="flex text-slate-200 gap-x-1">
-          <span className="">{`@${author.name}`}</span>
-          <span className="font-thin">{`· ${dayjs(post.createdAt).fromNow()}`}</span>
-        </div>
-        <span className="">{post.content}</span>
-      </div>
+    <div key={post.id} className="flex gap-3 border-b border-slate-400 p-4">
+      <Image className="h-14 w-14 rounded-full"alt="profile-image" src={author.profileImageUrl} height={63} width={63}></Image>
+      <span className="text-2xl">{post.content}</span>
     </div>
-  )
-}
+  );
+};
 
 const Home: NextPage = () => {
   const user = useUser();

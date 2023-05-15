@@ -19,14 +19,22 @@ const CreatePostWizard = () => {
 
   const [input, setInput] = useState<string>("");
 
-  const { mutate } = api.posts.create.useMutation();
+  const ctx = api.useContext();
+
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
+    onSuccess: () => {
+      setInput("")
+      // Void removes red line that TS gives as an error since its waiting on a promise.
+      void ctx.posts.getAll.invalidate();
+    }
+  });
 
   if (!user) return null;
 
   return (
     <div className="flex gap-3 w-full">
       <Image width={56} height={56} className="h-14 w-14 rounded-full" src={user.profileImageUrl} alt="Profile_Image" />
-      <input className="grow outline-none bg-transparent" type="text" placeholder="Type some emojis!" value={input} onChange={(e) => setInput(e.target.value)}/>
+      <input className="grow outline-none bg-transparent" type="text" placeholder="Type some emojis!" value={input} onChange={(e) => setInput(e.target.value)} disabled={isPosting}/>
       <button onClick={() => mutate({ content: input})}>Post</button>
     </div>
   )

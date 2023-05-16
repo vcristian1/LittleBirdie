@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { SignInButton, useUser } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 
 import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api"
@@ -32,10 +32,11 @@ const CreatePostWizard = () => {
   if (!user) return null;
 
   return (
-    <div className="flex gap-3 w-full">
+    <div className="flex gap-2 w-full">
       <Image width={56} height={56} className="h-14 w-14 rounded-full" src={user.profileImageUrl} alt="Profile_Image" />
       <input className="grow outline-none bg-transparent" type="text" placeholder="Type some emojis!" value={input} onChange={(e) => setInput(e.target.value)} disabled={isPosting}/>
-      <button onClick={() => mutate({ content: input})}>Post</button>
+      <button className="rounded-[15px] bg-green-500 px-2 hover:opacity-80 transition duration-500" onClick={() => mutate({ content: input})}>Post𓅪</button>
+      <SignOutButton />
     </div>
   )
 }
@@ -48,7 +49,7 @@ const PostView = (props: PostWithUser) => {
       <Image className="h-14 w-14 rounded-full"alt={`${author.username}'s-profile-image`} src={author.profileImageUrl} height={63} width={63}></Image>
       <div className="flex flex-col">
         <div className="flex gap-1 text-slate-200">
-          <Link href={`https://www.github.com/${author.username}`}>{`@${author.username} ·`}<span className="font-thin">{` ${dayjs(post.createdAt).fromNow()}`}</span></Link>
+          <Link className="hover:opacity-80 transition duration-500" target="_blank" rel="no-referrer" href={`https://www.github.com/${author.username}`}>{`@${author.username} ·`}<span className="font-thin">{` ${dayjs(post.createdAt).fromNow()}`}</span></Link>
         </div>
         <span className="text-2xl">{post.content}</span>
       </div>
@@ -91,10 +92,16 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex h-screen justify-center">
         <div className="h-full w-full md:max-w-2xl border-x border-slate-400">
-          <div className="flex border-b border-slate-400 p-4">
+          <div className="flex border-b border-slate-400 p-6">
             {!isSignedIn && 
-              <div className="flex justify-center">
-                <SignInButton />
+              <div className="flex gap-[500px] md:gap-[500px] lg:gap-[470px]">
+                <div className="">
+                  <Link href="/">Little Birdie𓅪</Link>
+                </div>
+                <div className="hover:opacity-80 transition duration-500">
+                  <SignInButton />
+                </div>
+                
               </div>
             }
             {isSignedIn && <CreatePostWizard />}

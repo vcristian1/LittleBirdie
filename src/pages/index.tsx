@@ -94,7 +94,7 @@ const Home: NextPage = () => {
         <div className="h-full w-full md:max-w-2xl border-x border-slate-400">
           <div className="flex border-b border-slate-400 p-6">
             {!isSignedIn && 
-              <div className="flex gap-[500px] md:gap-[500px] lg:gap-[470px]">
+              <div className="overflow-hidden flex xs:gap-[0px] gap-[180px] md:gap-[470px] lg:gap-[470px]">
                 <div className="">
                   <Link href="/">Little Birdie𓅪</Link>
                 </div>
